@@ -11,9 +11,33 @@
             box-sizing: border-box;
         }
 
+        /* ===== Fix: hilangkan garis putih di kanan & safety overflow ===== */
+        html, body {
+          min-height: 100%;
+          width: 100%;
+          overflow-x: hidden;            /* cegah horizontal scroll */
+          background-color: #0f3460;     /* fallback gelap agar tidak terlihat celah putih */
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          box-sizing: border-box;
+          overscroll-behavior-x: none;
+        }
+
+        /* pastikan elemen besar menggunakan full width */
+        .section-opening, .section-story, .section-details, .section-gallery, .modal {
+          width: 100%;
+          left: 0;
+          right: 0;
+          box-sizing: border-box;
+        }
+
+        /* optional: scrollbar lebih rapi (tidak memunculkan track putih di beberapa browser) */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.18); border-radius: 8px; }
+
         body {
             font-family: 'Cormorant Garamond', 'Georgia', serif;
-            overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
@@ -580,6 +604,23 @@
             text-transform: uppercase;
         }
 
+        @media (max-width: 480px) {
+            .countdown-box {
+                padding: 12px 16px;
+                min-width: 78px;
+                border-radius: 12px;
+                box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            }
+            .countdown-number {
+                font-size: 2.2em;
+            }
+            .countdown-label {
+                font-size: 0.8em;
+                letter-spacing: 1px;
+            }
+            .countdown-timer { gap: 12px; }
+        }
+
         /* SECTION 4: GALLERY */
         .section-gallery {
             min-height: 100vh;
@@ -647,6 +688,7 @@
             max-width: 1100px;
             width: calc(100% - 60px);
             text-align: center;
+            position: relative; /* for overlay nav */
         }
         .modal .modal-content img {
             width: 100%;
@@ -655,6 +697,46 @@
             display: block;
             max-height: calc(100vh - 120px);
             object-fit: contain;
+        }
+
+        /* ====== ADDED: modern gallery nav (overlay arrows) and button styles ====== */
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none; /* allow clicks only on buttons */
+        }
+        .gallery-btn {
+            pointer-events: auto;
+            background: rgba(0,0,0,0.45);
+            border: none;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+            transition: transform 0.18s ease, background 0.18s ease;
+            margin: 0 12px;
+        }
+        .gallery-btn:hover {
+            transform: scale(1.06);
+            background: rgba(0,0,0,0.6);
+        }
+        .gallery-btn:active { transform: scale(0.98); }
+
+        @media (max-width: 480px) {
+            .gallery-btn { width: 40px; height: 40px; font-size: 1.1em; margin: 0 8px; }
+            .modal .modal-content { width: calc(100% - 36px); }
         }
 
         /* SECTION 5: RSVP */
@@ -1149,28 +1231,28 @@
                 font-size: 2.5em;
                 letter-spacing: 4px;
             }
-            
+
             .section-title {
                 font-size: 2.5em;
             }
-            
+
             .timeline::before {
                 left: 20px;
             }
-            
+
             .timeline-item {
                 flex-direction: column !important;
             }
-            
+
             .timeline-content {
                 width: 100%;
                 margin-left: 40px;
             }
-            
+
             .timeline-date {
                 left: 20px;
             }
-            
+
             .floating-nav {
                 display: none;
             }
@@ -1199,6 +1281,109 @@
     Your browser does not support the audio element.
 </audio>
 
+<!-- AUTOPLAY BEST-EFFORT + "Tap to unmute" overlay -->
+<script>
+(function(){
+  const bg = document.getElementById('bgMusic');
+  const control = document.getElementById('audioControl');
+
+  if (!bg || !control) return;
+
+  function setIcon() {
+      control.textContent = (bg.paused || bg.muted) ? '🔇' : '🔊';
+  }
+
+  // buat overlay play (hanya ditambahkan sekali)
+  function ensureOverlay() {
+    if (document.getElementById('playOverlay')) return;
+    const ov = document.createElement('div');
+    ov.id = 'playOverlay';
+    ov.setAttribute('role','dialog');
+    ov.innerHTML = `<button id="playNow" aria-label="Putar musik" title="Tap to play">▶</button>`;
+    Object.assign(ov.style, {
+      position: 'fixed',
+      zIndex: 2002,
+      left: '50%',
+      top: '50%',
+      transform: 'translate(-50%,-50%)',
+      display: 'none',
+      backdropFilter: 'blur(6px)'
+    });
+    const btn = ov.querySelector('#playNow');
+    Object.assign(btn.style, {
+      width: '88px', height: '88px', borderRadius: '50%',
+      border: 'none', fontSize: '2.2rem', background: 'rgba(201,169,97,0.95)',
+      color:'#fff', cursor:'pointer', boxShadow:'0 8px 30px rgba(0,0,0,0.25)'
+    });
+    btn.addEventListener('click', async (e)=>{
+      e.preventDefault();
+      try {
+        bg.muted = false;
+        await bg.play();
+        hideOverlay();
+        setIcon();
+      } catch(err) {
+        console.warn('Play failed after user click', err);
+      }
+    });
+    document.body.appendChild(ov);
+  }
+
+  function showOverlay(){ const ov = document.getElementById('playOverlay'); if (ov) ov.style.display = 'block'; }
+  function hideOverlay(){ const ov = document.getElementById('playOverlay'); if (ov) ov.style.display = 'none'; }
+
+  // Expose toggleAudio for dipanggil dari onclick di HTML
+  window.toggleAudio = async function(){
+      try {
+          if (bg.paused) {
+              await bg.play();
+              bg.muted = false;
+          } else {
+              bg.pause();
+          }
+      } catch (err) {
+          console.warn('Autoplay blocked or error:', err);
+          bg.muted = true;
+          alert('Browser memblokir pemutaran otomatis. Klik tombol play untuk memutar musik.');
+      } finally {
+          setIcon();
+      }
+  };
+
+  bg.addEventListener('play', setIcon);
+  bg.addEventListener('pause', setIcon);
+  bg.addEventListener('volumechange', setIcon);
+
+  // Try unmuted autoplay, fallback to muted autoplay and show overlay
+  async function tryAutoplay() {
+    try {
+      bg.muted = false;
+      await bg.play();
+      setIcon();
+      hideOverlay();
+      return;
+    } catch(e) {
+      try {
+        bg.muted = true;
+        await bg.play();
+        ensureOverlay();
+        showOverlay();
+        setIcon();
+      } catch(e2) {
+        ensureOverlay();
+        showOverlay();
+        setIcon();
+      }
+    }
+  }
+
+  // run after load
+  window.addEventListener('load', () => {
+    setTimeout(tryAutoplay, 250); // delay kecil untuk memberi waktu DOM & browser
+  });
+
+})();
+</script>
 
     <!-- Floating Navigation -->
     <div class="floating-nav">
@@ -1674,75 +1859,6 @@
         // CORE INTERACTIONS
         // =========================
 
-(function(){
-    const bg = document.getElementById('bgMusic');
-    const control = document.getElementById('audioControl');
-
-    if (!bg || !control) {
-        // jika elemen belum ada, tidak perlu lanjut
-        return;
-    }
-
-    function setIcon() {
-        // kalau muted atau paused -> tampil MUTE icon
-        control.textContent = (bg.paused || bg.muted) ? '🔇' : '🔊';
-    }
-
-    // Expose toggleAudio untuk dipanggil dari onclick di HTML
-    window.toggleAudio = async function(){
-        try {
-            if (bg.paused) {
-                // try play (may throw if autoplay blocked)
-                await bg.play();
-                // unmute when user explicitly toggles
-                bg.muted = false;
-            } else {
-                bg.pause();
-            }
-        } catch (err) {
-            console.warn('Autoplay blocked or error:', err);
-            // beri instruksi ke user — tidak fatal
-            bg.muted = true;
-            alert('Browser memblokir pemutaran otomatis. Klik tombol play untuk memutar musik.');
-        } finally {
-            setIcon();
-        }
-    };
-
-    // update icon saat event audio berubah
-    bg.addEventListener('play', setIcon);
-    bg.addEventListener('pause', setIcon);
-    bg.addEventListener('volumechange', setIcon);
-
-    // first user gesture: jika audio sudah playing namun masih muted, unmute
-    function firstGesture() {
-        if (!bg.paused && bg.muted) {
-            try { bg.muted = false; } catch(e) {}
-            setIcon();
-        }
-        window.removeEventListener('click', firstGesture);
-        window.removeEventListener('keydown', firstGesture);
-    }
-    window.addEventListener('click', firstGesture, { once:true });
-    window.addEventListener('keydown', firstGesture, { once:true });
-
-    // OPTIONAL: try muted autoplay once (some browsers allow muted autoplay)
-    (async function tryMutedAutoplay(){
-        try {
-            bg.muted = true;
-            await bg.play();
-            // keep muted; user can unmute via toggleAudio
-        } catch(e){
-            // ignore — browser blocked autoplay
-        } finally {
-            setIcon();
-        }
-    })();
-
-    // initial icon
-    setIcon();
-})();
-
         // ====================================
         // INTEGRASI BACKEND GOOGLE APPS SCRIPT
         // ====================================
@@ -2022,7 +2138,7 @@ function openMap(type) {
             });
         }
 
-/* ============================
+ /* ============================
    GALLERY FIX (Sesuaikan HTML kamu)
    ============================ */
 
@@ -2042,19 +2158,26 @@ function openGallery(index) {
     const modal = document.getElementById('galleryModal');
     const content = document.getElementById('modalContent');
 
+    // Build modern modal layout: image + overlay arrow buttons (no "Tutup" button)
     content.innerHTML = `
-        <img src="${GALLERY_IMAGES[galleryIndex]}" 
-             style="max-width:100%; border-radius:10px;" />
+        <div style="position:relative;">
+            <img src="${GALLERY_IMAGES[galleryIndex]}" alt="Gallery photo" style="max-width:100%; border-radius:10px; display:block;" />
 
-        <div style="margin-top:15px; display:flex; justify-content:center; gap:10px;">
-            <button onclick="galleryPrev()">◀ Prev</button>
-            <button onclick="galleryNext()">Next ▶</button>
-            <button onclick="closeModal()">Tutup ✕</button>
+            <!-- overlay nav -->
+            <div class="gallery-nav" aria-hidden="false">
+                <button class="gallery-btn" aria-label="Previous" onclick="galleryPrev()">◀</button>
+                <button class="gallery-btn" aria-label="Next" onclick="galleryNext()">▶</button>
+            </div>
         </div>
     `;
 
     modal.classList.add('active');
     modal.style.display = 'flex';
+    modal.setAttribute('aria-hidden', 'false');
+    // set focus to modal for accessibility
+    setTimeout(()=> {
+        content.focus?.();
+    }, 150);
 }
 
 // TUTUP
@@ -2062,6 +2185,7 @@ function closeModal() {
     const modal = document.getElementById('galleryModal');
     modal.classList.remove('active');
     modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
 
     const content = document.getElementById('modalContent');
     content.innerHTML = `
