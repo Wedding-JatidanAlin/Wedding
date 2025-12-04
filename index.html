@@ -1,0 +1,2117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan - Jati & Alin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Audio Control */
+        .audio-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(201, 169, 97, 0.9);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            font-size: 1.5em;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .audio-control:hover {
+            transform: scale(1.1);
+        }
+
+        /* Floating Navigation */
+        .floating-nav {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(201, 169, 97, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-dot:hover {
+            background: #c9a961;
+            transform: scale(1.3);
+        }
+
+        .nav-dot.active {
+            background: #c9a961;
+            width: 16px;
+            height: 16px;
+        }
+
+        .nav-dot::after {
+            content: attr(data-label);
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .nav-dot:hover::after {
+            opacity: 1;
+        }
+
+        /* SECTION 1: OPENING */
+        .section-opening {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: float-particle 20s infinite;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes float-particle {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.3;
+            animation: pulse-glow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.5;
+            }
+        }
+
+        .opening-content {
+            text-align: center;
+            z-index: 10;
+            max-width: 800px;
+        }
+
+        .opening-content h1 {
+            font-size: 5em;
+            color: #fff;
+            margin-bottom: 20px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            font-weight: 300;
+            text-shadow: 0 0 30px rgba(255,255,255,0.3);
+            animation: fadeInDown 1.5s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .divider {
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #c9a961, transparent);
+            margin: 30px auto;
+            animation: expandWidth 2s ease-out;
+        }
+
+        @keyframes expandWidth {
+            from {
+                width: 0;
+            }
+            to {
+                width: 200px;
+            }
+        }
+
+        .opening-subtitle {
+            font-size: 1.8em;
+            color: #c9a961;
+            margin-bottom: 20px;
+            letter-spacing: 4px;
+            animation: fadeIn 2s ease-out 0.5s backwards;
+        }
+
+        .opening-date {
+            font-size: 1.3em;
+            color: rgba(255,255,255,0.8);
+            letter-spacing: 3px;
+            animation: fadeIn 2s ease-out 1s backwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .scroll-indicator {
+            margin-top: 60px;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator p {
+            color: rgba(255,255,255,0.7);
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .scroll-arrow {
+            font-size: 2em;
+            color: #c9a961;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Guest Name Box */
+        .guest-greeting {
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease-out;
+            background: rgba(255,255,255,0.1);
+            padding: 25px 40px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(201,169,97,0.3);
+        }
+
+        .guest-label {
+            font-size: 1.2em;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .guest-name {
+            font-size: 2em;
+            color: #c9a961;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: capitalize;
+            text-shadow: 0 2px 10px rgba(201,169,97,0.3);
+        }
+
+        /* SECTION 2: STORY */
+        .section-story {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fdf8f3 0%, #f5ebe0 100%);
+            padding: 100px 20px;
+            position: relative;
+        }
+
+        .story-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3.5em;
+            color: #2c2c2c;
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: 4px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #c9a961;
+            font-size: 1.3em;
+            margin-bottom: 60px;
+            letter-spacing: 2px;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, #c9a961, transparent);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .timeline-date {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #c9a961;
+            color: white;
+            width: 120px;
+            padding: 10px;
+            text-align: center;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.8em;
+            color: #2c2c2c;
+            margin-bottom: 15px;
+        }
+
+        .timeline-content p {
+            color: #666;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        /* SECTION 3: DETAILS */
+        .section-details {
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #f8f5f0 0%, #e8e0d5 100%);
+            padding: 100px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .details-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 5;
+        }
+
+        .couple-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+            margin: 60px 0;
+            flex-wrap: wrap;
+        }
+
+        .couple-card {
+            text-align: center;
+            background: white;
+            padding: 50px 40px;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            min-width: 300px;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .couple-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #c9a961, #e6d5a8);
+            border-radius: 10px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .couple-card:hover::before {
+            opacity: 1;
+        }
+
+        .couple-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .couple-name {
+            font-size: 2.5em;
+            color: #2c2c2c;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .couple-parents {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .social-links {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #c9a961;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: scale(1.2);
+            background: #b8935a;
+        }
+
+        .ampersand {
+            font-size: 3em;
+            color: #c9a961;
+            font-style: italic;
+        }
+
+        .event-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .event-card {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border-left: 4px solid #c9a961;
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+        }
+
+        .event-icon {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .event-card h3 {
+            font-size: 1.8em;
+            color: #2c2c2c;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .event-card p {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin: 8px 0;
+        }
+
+        .map-button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #c9a961;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .map-button:hover {
+            background: #b8935a;
+            transform: scale(1.05);
+        }
+
+        .countdown-section {
+            text-align: center;
+            margin: 80px 0;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #c9a961 0%, #b8935a 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(201, 169, 97, 0.3);
+        }
+
+        .countdown-title {
+            font-size: 2em;
+            color: white;
+            margin-bottom: 40px;
+            letter-spacing: 3px;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-box {
+            background: rgba(255,255,255,0.95);
+            padding: 30px 40px;
+            border-radius: 15px;
+            min-width: 120px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .countdown-number {
+            font-size: 3.5em;
+            color: #2c2c2c;
+            font-weight: 300;
+            display: block;
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-size: 1em;
+            color: #666;
+            margin-top: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* SECTION 4: GALLERY */
+        .section-gallery {
+            min-height: 100vh;
+            background: #2c2c2c;
+            padding: 100px 20px;
+        }
+
+        /* --- NEW: horizontal gallery (overrides placeholders) --- */
+        .gallery-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 10px 12px;
+        }
+
+        .gallery-item {
+            flex: 0 1 calc(33.333% - 18px);
+            min-width: 180px;
+            height: 220px;
+            padding: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.03);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-placeholder {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 3em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* modal image responsive */
+        .modal .modal-content {
+            background: transparent;
+            padding: 0;
+            border-radius: 8px;
+            max-width: 1100px;
+            width: calc(100% - 60px);
+            text-align: center;
+        }
+        .modal .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            max-height: calc(100vh - 120px);
+            object-fit: contain;
+        }
+
+        /* SECTION 5: RSVP */
+        .section-rsvp {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fdf8f3 0%, #f5ebe0 100%);
+            padding: 100px 20px;
+        }
+
+        .rsvp-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #2c2c2c;
+            font-size: 1.1em;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #c9a961;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #c9a961 0%, #b8935a 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(201, 169, 97, 0.4);
+        }
+
+        /* SECTION 6: WISHES */
+        .section-wishes {
+            min-height: 100vh;
+            background: #f8f5f0;
+            padding: 100px 20px;
+        }
+
+        .wishes-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .wish-form {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .wishes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .wish-item {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            border-left: 4px solid #c9a961;
+        }
+
+        .wish-author {
+            font-weight: bold;
+            color: #2c2c2c;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .wish-message {
+            color: #666;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .wish-date {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+
+        /* SECTION 7: GIFT */
+        .section-gift {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 100px 20px;
+            color: white;
+        }
+
+        .gift-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .gift-intro {
+            font-size: 1.3em;
+            line-height: 2;
+            margin-bottom: 60px;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .gift-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .gift-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .gift-card:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-5px);
+        }
+
+        .gift-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .gift-bank {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #c9a961;
+        }
+
+        .gift-number {
+            font-size: 1.3em;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .gift-name {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 20px;
+        }
+
+        .copy-btn {
+            padding: 10px 30px;
+            background: #c9a961;
+            border: none;
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #b8935a;
+            transform: scale(1.05);
+        }
+
+        /* Map Container */
+        .map-container {
+            margin: 80px 0;
+            position: relative;
+        }
+
+        .map-wrapper {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .map-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.95);
+            padding: 15px 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .map-overlay p {
+            margin: 5px 0;
+            color: #2c2c2c;
+            font-weight: 500;
+        }
+
+        /* Quote Section */
+        .quote-section {
+            margin: 80px auto;
+            padding: 60px 40px;
+            max-width: 900px;
+            background: linear-gradient(135deg, rgba(201,169,97,0.1) 0%, rgba(201,169,97,0.05) 100%);
+            border-radius: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .ornamental-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .ornamental-line span {
+            color: #c9a961;
+            font-size: 1.5em;
+        }
+
+        .ornamental-line .line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #c9a961, transparent);
+            max-width: 150px;
+        }
+
+        .quote-text {
+            font-size: 1.4em;
+            color: #2c2c2c;
+            line-height: 2;
+            font-style: italic;
+            margin: 30px 0;
+        }
+
+        .quote-source {
+            color: #c9a961;
+            font-size: 1.1em;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* Decorative flowers */
+        .decorative-flowers {
+            position: absolute;
+            opacity: 0.15;
+            font-size: 4em;
+            pointer-events: none;
+        }
+
+        .flower-top-left {
+            top: -20px;
+            left: -20px;
+            transform: rotate(-15deg);
+        }
+
+        .flower-bottom-right {
+            bottom: -20px;
+            right: -20px;
+            transform: rotate(15deg);
+        }
+
+        /* Closing Decorations */
+        .closing-decoration {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .closing-ornament {
+            font-size: 2em;
+            color: #c9a961;
+        }
+
+        .closing-ornament-line {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #c9a961, transparent);
+        }
+
+        .closing-quote-box {
+            background: linear-gradient(135deg, rgba(201,169,97,0.1) 0%, rgba(201,169,97,0.05) 100%);
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+            position: relative;
+            border: 1px solid rgba(201,169,97,0.2);
+        }
+
+        .quote-icon {
+            font-size: 4em;
+            color: #c9a961;
+            opacity: 0.3;
+            font-family: Georgia, serif;
+            line-height: 0.5;
+        }
+
+        .closing-quote-end {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+        }
+
+        .closing-quote {
+            font-size: 1.3em;
+            color: #2c2c2c;
+            line-height: 1.8;
+            font-style: italic;
+            margin: 20px 0;
+        }
+
+        .signature-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin: 50px 0;
+        }
+
+        .signature-line {
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #c9a961, transparent);
+        }
+
+        .hashtag-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            margin: 40px auto;
+            max-width: 400px;
+        }
+
+        .footer-decoration {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 50px 0 30px 0;
+        }
+
+        .footer-ornament {
+            font-size: 1.5em;
+            color: #c9a961;
+        }
+
+        .footer-line {
+            width: 80px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, #c9a961, transparent);
+        }
+
+        /* SECTION 8: CLOSING */
+        .section-closing {
+            min-height: 100vh;
+            background: #fafafa;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 20px;
+        }
+
+        .closing-content {
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .closing-content h2 {
+            font-size: 3em;
+            color: #2c2c2c;
+            margin-bottom: 40px;
+            font-weight: 300;
+            letter-spacing: 3px;
+        }
+
+        .simple-divider {
+            width: 80px;
+            height: 1px;
+            background: #c9a961;
+            margin: 30px auto;
+        }
+
+        .closing-message {
+            font-size: 1.3em;
+            color: #666;
+            line-height: 2;
+            margin: 30px 0;
+        }
+
+        .closing-names {
+            font-size: 2.5em;
+            color: #2c2c2c;
+            margin: 50px 0 30px 0;
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        .simple-heart {
+            font-size: 2em;
+            color: #c9a961;
+            margin: 20px 0;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 3em;
+            color: white;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .opening-content h1 {
+                font-size: 2.5em;
+                letter-spacing: 4px;
+            }
+            
+            .section-title {
+                font-size: 2.5em;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                flex-direction: column !important;
+            }
+            
+            .timeline-content {
+                width: 100%;
+                margin-left: 40px;
+            }
+            
+            .timeline-date {
+                left: 20px;
+            }
+            
+            .floating-nav {
+                display: none;
+            }
+
+            .audio-control {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+            }
+
+            .gallery-item { flex: 0 1 calc(50% - 18px); height: 160px; }
+        }
+    </style>
+</head>
+<body>
+
+
+    <!-- Audio Control -->
+    <div class="audio-control" id="audioControl" onclick="toggleAudio()" title="Play / Pause music">
+        🔇
+    </div>
+    <!-- background music; muted for autoplay initially -->
+<audio id="bgMusic" loop playsinline preload="auto">
+    <source src="music/music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+
+    <!-- Floating Navigation -->
+    <div class="floating-nav">
+        <div class="nav-dot active" data-label="Opening" onclick="scrollToSection(0)"></div>
+        <div class="nav-dot" data-label="Our Story" onclick="scrollToSection(1)"></div>
+        <div class="nav-dot" data-label="Details" onclick="scrollToSection(2)"></div>
+        <div class="nav-dot" data-label="Gallery" onclick="scrollToSection(3)"></div>
+        <div class="nav-dot" data-label="RSVP" onclick="scrollToSection(4)"></div>
+        <div class="nav-dot" data-label="Wishes" onclick="scrollToSection(5)"></div>
+        <div class="nav-dot" data-label="Gift" onclick="scrollToSection(6)"></div>
+        <div class="nav-dot" data-label="Thank You" onclick="scrollToSection(7)"></div>
+    </div>
+
+    <!-- SECTION 1: OPENING -->
+    <div class="section-opening" data-section="0">
+        <div class="particles" id="particles"></div>
+        
+        <div class="glow-orb" style="width: 300px; height: 300px; background: #c9a961; top: 10%; left: 10%;"></div>
+        <div class="glow-orb" style="width: 400px; height: 400px; background: #6b5d8f; bottom: 10%; right: 10%;"></div>
+        <div class="glow-orb" style="width: 250px; height: 250px; background: #4a6fa5; top: 50%; left: 50%;"></div>
+        
+        <div class="opening-content">
+            <h1>THE WEDDING</h1>
+            <div class="divider"></div>
+            <p class="opening-subtitle">JATI & ALIN</p>
+            <p class="opening-date">20 . 12 . 2025</p>
+            
+            <!-- Greeting dengan nama tamu -->
+            <div class="guest-greeting" style="margin-top: 50px;">
+                <p class="guest-label">Kepada Yth</p>
+                <p class="guest-label">Bapak/Ibu/Saudara/i:</p>
+                <p class="guest-name" id="guestName">Bapak/Ibu/Saudara/i</p>
+            </div>
+            
+            <div class="scroll-indicator">
+                <p>SCROLL DOWN</p>
+                <div class="scroll-arrow">↓</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: OUR STORY -->
+    <div class="section-story" data-section="1">
+        <div class="story-container">
+            <h2 class="section-title">Our Love Story</h2>
+            <p class="section-subtitle">Perjalanan Cinta Kami</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Awal Bertemu</h3>
+                        <p>Pertemuan pertama kami adalah di PT tempat kami bekerja, lalu kami memulai pdkt pada bulan April.</p>
+                    </div>
+                    <div class="timeline-date">2022</div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Hubungan Dimulai</h3>
+                        <p>Setelah melakukan pdkt selama kurang lebih 2 minggu, dan pada bulan Mei akhirnya kami mulai menjalin hubungan.</p>
+                    </div>
+                    <div class="timeline-date">2022</div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Lamaran</h3>
+                        <p>Setelah menjalin hubungan yang cukup lama, akhirnya pada bulan Desember kami memutuskan untuk menjalin hubungan ke jenjang yang lebih serius karna kami sudah yakin satu sama lain dan menjadi langkah awal kami menuju pernikahan.</p>
+                    </div>
+                    <div class="timeline-date">2024</div>
+                </div>
+                 
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Hari Bahagia</h3>
+                        <p>Insya Allah, kami akan mengikat janji suci untuk memulai perjalanan baru sebagai suami istri. Do'akan kami!</p>
+                    </div>
+                    <div class="timeline-date">2025</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 3: DETAILS -->
+    <div class="section-details" data-section="2">
+        <div class="details-container">
+            <h2 class="section-title">Wedding Details</h2>
+            <p class="section-subtitle">Dengan memohon rahmat dan ridho Allah SWT</p>
+            
+            <!-- Couple Section -->
+            <div class="couple-section">
+                <div class="couple-card">
+                    <h3 class="couple-name">Jati Khoirul Mubarok</h3>
+                    <div class="simple-divider"></div>
+                    <p class="couple-parents">
+                        Putra Pertama dari<br>
+                        Bapak Suroso<br>
+                        & Ibu Indartik
+                    </p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/jatilejati_" target="_blank" rel="noopener noreferrer" class="social-link">📷</a>
+                    </div>
+                </div>
+                
+                <div class="ampersand">&</div>
+                
+                <div class="couple-card">
+                    <h3 class="couple-name">Alin Herwiana</h3>
+                    <div class="simple-divider"></div>
+                    <p class="couple-parents">
+                        Putri Kedua dari<br>
+                        Bapak Ruhenda (Alm.)<br>
+                        & Ibu Eti
+                    </p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/alinherwiana" target="_blank" rel="noopener noreferrer" class="social-link">📷</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Countdown -->
+            <div class="countdown-section">
+                <h3 class="countdown-title">COUNTING DOWN TO OUR BIG DAY</h3>
+                <div class="countdown-timer">
+                    <div class="countdown-box">
+                        <span class="countdown-number" id="days">00</span>
+                        <p class="countdown-label">Hari</p>
+                    </div>
+                    <div class="countdown-box">
+                        <span class="countdown-number" id="hours">00</span>
+                        <p class="countdown-label">Jam</p>
+                    </div>
+                    <div class="countdown-box">
+                        <span class="countdown-number" id="minutes">00</span>
+                        <p class="countdown-label">Menit</p>
+                    </div>
+                    <div class="countdown-box">
+                        <span class="countdown-number" id="seconds">00</span>
+                        <p class="countdown-label">Detik</p>
+                    </div>
+                </div>
+            </div>
+
+<!-- ==== update: event-grid (ganti 3 card lama) ==== -->
+<div class="event-grid">
+    <div class="event-card">
+        <div class="event-icon">💍</div>
+        <h3>Akad Nikah</h3>
+        <p>Sabtu, 20 Desember 2025</p>
+        <p>08:00 WIB - Selesai</p>
+        <p style="margin-top: 15px; font-style: italic;">Kediaman Mempelai Wanita</p>
+        <p style="margin-top:8px;">
+            <strong>Dusun Sembung Jaya</strong><br>
+            RT 05 / RW 05, Desa Mekarmukti, Kec. Cisaga, Kabupaten Ciamis<br>
+            <em>Parkir tersedia</em>
+        </p>
+        <button class="map-button" onclick="openMap('akad')">📍 Lihat Lokasi Akad & Resepsi</button>
+    </div>
+
+    <div class="event-card">
+        <div class="event-icon">🎊</div>
+        <h3>Resepsi</h3>
+        <p>Sabtu, 20 Desember 2025</p>
+        <p>10:00 - 14:00 WIB</p>
+        <p style="margin-top: 15px; font-style: italic;">Kediaman Mempelai Wanita</p>
+        <p style="margin-top:8px;">
+            <strong>Dusun Sembung Jaya</strong><br>
+            RT 05 / RW 05, Desa Mekarmukti, Kec. Cisaga, Kabupaten Ciamis<br>
+            <em>Parkir tersedia</em>
+        </p>
+        <button class="map-button" onclick="openMap('resepsi')">📍 Lihat Lokasi Akad & Resepsi</button>
+    </div>
+
+    <div class="event-card">
+        <div class="event-icon">📍</div>
+        <h3>Ngunduh Mantu</h3>
+        <p><strong>Jl. Mede, RT.1/RW.004, Cijengkol, Kec. Setu</strong></p>
+        <p>Kabupaten Bekasi, Jawa Barat</p>
+        <p style="margin-top: 15px; font-style: italic;">Mohon datang tepat waktu</p>
+        <button class="map-button" onclick="openMap('ngunduh')">🗺️ Lihat Lokasi Ngunduh Mantu</button>
+    </div>
+</div>
+<!-- ==== end update ==== -->
+            
+           <!-- ==== update: map-container (ganti 1 iframe lama) ==== -->
+<div class="map-container">
+    <h3 style="text-align: center; font-size: 2em; color: #2c2c2c; margin-bottom: 30px; font-weight: 300;">Peta Lokasi</h3>
+    <div style="display:grid;grid-template-columns:1fr;gap:16px;">
+        <!-- Map for Akad & Resepsi (Dusun Sembung Jaya) -->
+        <div class="map-wrapper" aria-label="Map Akad Resepsi">
+            <iframe 
+                src="https://www.google.com/maps?q=Dusun%20Sembung%20Jaya%20RT%2005%20RW%2005%20Desa%20Mekarmukti%20Cisaga&output=embed"
+                width="100%" height="320" style="border:0;border-radius:8px;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Peta Dusun Sembung Jaya"></iframe>
+            <div class="map-overlay">
+                <p>📍 Dusun Sembung Jaya RT 05/RW 05</p>
+                <p>Desa Mekarmukti, Kec. Cisaga, Kab. Ciamis</p>
+            </div>
+        </div>
+
+        <!-- Map for Ngunduh Mantu (Jl. Mede, Cijengkol, Setu, Bekasi) -->
+        <div class="map-wrapper" aria-label="Map Ngunduh Mantu">
+            <iframe 
+                src="https://www.google.com/maps?q=Jl.%20Mede%20Cijengkol%20Setu%20Bekasi&output=embed"
+                width="100%" height="320" style="border:0;border-radius:8px;" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Peta Ngunduh Mantu"></iframe>
+            <div class="map-overlay">
+                <p>📍 Ngunduh Mantu — Jl. Mede, RT.1/RW.004</p>
+                <p>Cijengkol, Kec. Setu, Kab. Bekasi</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ==== end update ==== -->
+            
+            <!-- Decorative Quote Section -->
+            <div class="quote-section">
+                <div class="ornamental-line">
+                    <span>❋</span>
+                    <div class="line"></div>
+                    <span>❋</span>
+                </div>
+                <p class="quote-text">"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."</p>
+                <p class="quote-source">— QS. Ar-Rum: 21</p>
+                <div class="ornamental-line">
+                    <span>❋</span>
+                    <div class="line"></div>
+                    <span>❋</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 4: GALLERY -->
+    <div class="section-gallery" data-section="3">
+        <div class="story-container">
+            <h2 class="section-title" style="color: white;">Our Gallery</h2>
+            <p class="section-subtitle" style="color: #c9a961;">Momen Indah Bersama</p>
+        </div>
+        
+<div class="gallery-grid">
+    <div class="gallery-item" onclick="openGallery(0)">
+        <img src="image/img1.jpg" alt="Foto 1">
+    </div>
+    <div class="gallery-item" onclick="openGallery(1)">
+        <img src="image/img2.jpg" alt="Foto 2">
+    </div>
+    <div class="gallery-item" onclick="openGallery(2)">
+        <img src="image/img3.jpg" alt="Foto 3">
+    </div>
+    <div class="gallery-item" onclick="openGallery(3)">
+        <img src="image/img4.jpg" alt="Foto 4">
+    </div>
+</div>
+    </div>
+
+    <!-- SECTION 5: RSVP -->
+    <div class="section-rsvp" data-section="4">
+        <div class="story-container">
+            <h2 class="section-title">RSVP</h2>
+            <p class="section-subtitle">Konfirmasi Kehadiran</p>
+        </div>
+        
+        <div class="rsvp-container">
+            <form id="rsvpForm" onsubmit="submitRSVP(event)">
+                <div class="form-group">
+                    <label>Nama Lengkap *</label>
+                    <input type="text" name="name" required placeholder="Masukkan nama lengkap">
+                </div>
+                
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="email@example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Nomor WhatsApp *</label>
+                    <input type="tel" name="phone" required placeholder="08xxxxxxxxxx">
+                </div>
+                
+                <div class="form-group">
+                    <label>Konfirmasi Kehadiran *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="attendance" value="hadir" required>
+                            <span>Hadir</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="attendance" value="tidak">
+                            <span>Tidak Hadir</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="attendance" value="ragu">
+                            <span>Masih Ragu</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Jumlah Tamu</label>
+                    <select name="guests">
+                        <option value="1">1 Orang</option>
+                        <option value="2">2 Orang</option>
+                        <option value="3">3 Orang</option>
+                        <option value="4">4 Orang</option>
+                        <option value="5">5+ Orang</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Catatan / Pesan</label>
+                    <textarea name="message" rows="4" placeholder="Tambahkan pesan untuk kami (opsional)"></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">KIRIM KONFIRMASI</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SECTION 6: WISHES -->
+    <div class="section-wishes" data-section="5">
+        <div class="wishes-container">
+            <h2 class="section-title">Wedding Wishes</h2>
+            <p class="section-subtitle">Ucapan & Doa</p>
+            
+            <div class="wish-form">
+                <form id="wishForm" onsubmit="submitWish(event)">
+                    <div class="form-group">
+                        <label>Nama</label>
+                        <input type="text" name="wishName" required placeholder="Nama Anda">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ucapan & Doa</label>
+                        <textarea name="wishMessage" rows="4" required placeholder="Tuliskan ucapan dan doa terbaik untuk kami..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">KIRIM UCAPAN</button>
+                </form>
+            </div>
+            
+            <div class="wishes-list" id="wishesList">
+                <div class="wish-item">
+                    <div class="wish-author">Sarah & Family</div>
+                    <div class="wish-message">Selamat menempuh hidup baru! Semoga menjadi keluarga yang sakinah, mawaddah, warahmah. Barakallah! 💕</div>
+                    <div class="wish-date">24 Oktober 2025</div>
+                </div>
+                
+                <div class="wish-item">
+                    <div class="wish-author">Dimas Prasetyo</div>
+                    <div class="wish-message">Congratulations! Wishing you both a lifetime of love and happiness. Semoga langgeng sampai kakek nenek ya! 🎉</div>
+                    <div class="wish-date">23 Oktober 2025</div>
+                </div>
+                
+                <div class="wish-item">
+                    <div class="wish-author">Keluarga Besar Wijaya</div>
+                    <div class="wish-message">Turut berbahagia atas pernikahan putra-putri Anda. Semoga menjadi keluarga yang diberkahi Allah SWT.</div>
+                    <div class="wish-date">22 Oktober 2025</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 7: GIFT -->
+    <div class="section-gift" data-section="6">
+        <div class="gift-container">
+            <h2 class="section-title" style="color: white;">Wedding Gift</h2>
+            <p class="section-subtitle" style="color: #c9a961;">Amplop Digital</p>
+            
+            <p class="gift-intro">
+                Doa restu dan kehadiran Anda adalah hadiah terindah bagi kami.<br>
+                Namun jika memberi adalah ungkapan kasih Anda,<br>
+                Anda dapat memberikannya melalui:
+            </p>
+            
+            <div class="gift-cards">
+                <div class="gift-card">
+                    <div class="gift-icon">🏦</div>
+                    <div class="gift-bank">Bank BCA</div>
+                    <div class="gift-number" id="bca-number">5681468677</div>
+                    <div class="gift-name">a.n. Jati Khoirul Mubarok</div>
+                    <button class="copy-btn" onclick="copyAccount('bca')">📋 Salin Rekening</button>
+                </div>
+                
+                <div class="gift-card">
+                    <div class="gift-icon">🏦</div>
+                    <div class="gift-bank">Bank Mandiri</div>
+                    <div class="gift-number" id="mandiri-number">1670004608344</div>
+                    <div class="gift-name">a.n. Alin Herwiana</div>
+                    <button class="copy-btn" onclick="copyAccount('mandiri')">📋 Salin Rekening</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 8: CLOSING -->
+    <div class="section-closing" data-section="7">
+        <div class="closing-content">
+            <!-- Decorative Header -->
+            <div class="closing-decoration">
+                <div class="closing-ornament">🌸</div>
+                <div class="closing-ornament-line"></div>
+                <div class="closing-ornament">💐</div>
+                <div class="closing-ornament-line"></div>
+                <div class="closing-ornament">🌸</div>
+            </div>
+            
+            <h2>Thank You</h2>
+            <div class="simple-divider"></div>
+            
+            <!-- Elegant Quote Box -->
+            <div class="closing-quote-box">
+                <div class="quote-icon">"</div>
+                <p class="closing-quote">
+                    Love is not just about finding the right person,<br>
+                    but creating the right relationship.
+                </p>
+                <div class="quote-icon closing-quote-end">"</div>
+            </div>
+            
+            <div class="simple-heart">♥</div>
+            
+            <p class="closing-message">
+                Merupakan suatu kehormatan dan kebahagiaan bagi kami<br>
+                apabila Bapak/Ibu/Saudara/i berkenan hadir<br>
+                untuk memberikan doa restu kepada kami.
+            </p>
+            
+            <p class="closing-message">
+                Atas kehadiran dan doa restu,<br>
+                kami mengucapkan terima kasih.
+            </p>
+            
+            <!-- Signature with decoration -->
+            <div class="signature-box">
+                <div class="signature-line"></div>
+                <p class="closing-names">Jati & Alin</p>
+                <div class="signature-line"></div>
+            </div>
+            
+            <!-- Wedding Hashtag -->
+            <div class="hashtag-section">
+                <p style="font-size: 1.5em; color: #c9a961; margin: 30px 0;">#JatiAlinForever</p>
+                <p style="color: #999;">Share your moments with us!</p>
+            </div>
+            
+            <!-- Footer with decoration -->
+            <div class="footer-decoration">
+                <div class="footer-ornament">❈</div>
+                <div class="footer-line"></div>
+                <div class="footer-ornament">♥</div>
+                <div class="footer-line"></div>
+                <div class="footer-ornament">❈</div>
+            </div>
+            
+            <div style="margin-top: 40px; color: #999; font-size: 0.9em;">
+                <p>Made with ♥ for our special day</p>
+                <p style="margin-top: 10px;">© 2025 Jati & Alin Wedding</p>
+                <p style="margin-top: 10px; font-size: 0.85em;">Designed with love and happiness</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Gallery -->
+    <div class="modal" id="galleryModal" aria-hidden="true">
+        <span class="close-modal" onclick="closeModal()">×</span>
+        <div class="modal-content" id="modalContent" role="dialog" aria-modal="true" tabindex="-1">
+            <h2 style="margin-bottom: 20px; color: #fff;">Gallery Item</h2>
+            <p style="color: #ccc;">Placeholder untuk foto gallery</p>
+        </div>
+    </div>
+
+    <script>
+        // =========================
+        // CORE INTERACTIONS
+        // =========================
+
+(function(){
+    const bg = document.getElementById('bgMusic');
+    const control = document.getElementById('audioControl');
+
+    if (!bg || !control) {
+        // jika elemen belum ada, tidak perlu lanjut
+        return;
+    }
+
+    function setIcon() {
+        // kalau muted atau paused -> tampil MUTE icon
+        control.textContent = (bg.paused || bg.muted) ? '🔇' : '🔊';
+    }
+
+    // Expose toggleAudio untuk dipanggil dari onclick di HTML
+    window.toggleAudio = async function(){
+        try {
+            if (bg.paused) {
+                // try play (may throw if autoplay blocked)
+                await bg.play();
+                // unmute when user explicitly toggles
+                bg.muted = false;
+            } else {
+                bg.pause();
+            }
+        } catch (err) {
+            console.warn('Autoplay blocked or error:', err);
+            // beri instruksi ke user — tidak fatal
+            bg.muted = true;
+            alert('Browser memblokir pemutaran otomatis. Klik tombol play untuk memutar musik.');
+        } finally {
+            setIcon();
+        }
+    };
+
+    // update icon saat event audio berubah
+    bg.addEventListener('play', setIcon);
+    bg.addEventListener('pause', setIcon);
+    bg.addEventListener('volumechange', setIcon);
+
+    // first user gesture: jika audio sudah playing namun masih muted, unmute
+    function firstGesture() {
+        if (!bg.paused && bg.muted) {
+            try { bg.muted = false; } catch(e) {}
+            setIcon();
+        }
+        window.removeEventListener('click', firstGesture);
+        window.removeEventListener('keydown', firstGesture);
+    }
+    window.addEventListener('click', firstGesture, { once:true });
+    window.addEventListener('keydown', firstGesture, { once:true });
+
+    // OPTIONAL: try muted autoplay once (some browsers allow muted autoplay)
+    (async function tryMutedAutoplay(){
+        try {
+            bg.muted = true;
+            await bg.play();
+            // keep muted; user can unmute via toggleAudio
+        } catch(e){
+            // ignore — browser blocked autoplay
+        } finally {
+            setIcon();
+        }
+    })();
+
+    // initial icon
+    setIcon();
+})();
+
+        // ====================================
+        // INTEGRASI BACKEND GOOGLE APPS SCRIPT
+        // ====================================
+        // ⚠️ GANTI INI DENGAN URL DEPLOYMENT GOOGLE APPS SCRIPT ANDA!
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyyFNTBKFMTMDUARTVSj6_MmI7N6xCDwiiJXr6m1PDFKSoLN73-HzRLJwzjYVCeC2H7OA/exec';
+
+        // Get nama tamu dari URL parameter
+        function getGuestName() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const guestName = urlParams.get('to');
+                if (guestName) {
+                    const formattedName = decodeURIComponent(guestName);
+                    // safe insertion
+                    document.getElementById('guestName').textContent = formattedName;
+                    trackVisitorWithName(formattedName);
+                } else {
+                    document.getElementById('guestName').textContent = 'Bapak/Ibu/Saudara/i';
+                }
+            } catch (e) {
+                console.warn('Error parsing guest name', e);
+                document.getElementById('guestName').textContent = 'Bapak/Ibu/Saudara/i';
+            }
+        }
+
+        // Track visitor
+        function trackVisitorWithName(guestName) {
+            try {
+                fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type':'application/json' },
+                    body: JSON.stringify({ action:'visit', page:'home', userAgent:navigator.userAgent, guestName: guestName || 'Unknown' })
+                }).catch(()=>{});
+            } catch(e){}
+        }
+        function trackVisitor() {
+            try {
+                fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type':'application/json' },
+                    body: JSON.stringify({ action:'visit', page: window.location.pathname, userAgent: navigator.userAgent })
+                }).catch(()=>{});
+            } catch(e){}
+        }
+
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            if (!container) return;
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Countdown timer
+        function startCountdown() {
+            const weddingDate = new Date('December 20, 2025 08:00:00').getTime();
+            function updateCountdown() {
+                const now = Date.now();
+                const distance = weddingDate - now;
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = String(Math.max(0, days)).padStart(2, '0');
+                document.getElementById('hours').textContent = String(Math.max(0, hours)).padStart(2, '0');
+                document.getElementById('minutes').textContent = String(Math.max(0, minutes)).padStart(2, '0');
+                document.getElementById('seconds').textContent = String(Math.max(0, seconds)).padStart(2, '0');
+
+                if (distance < 0) {
+                    clearInterval(timer);
+                    const el = document.querySelector('.countdown-timer');
+                    if (el) el.innerHTML = '<p style="font-size:2em;color:white;">Hari Bahagia Telah Tiba! 🎉</p>';
+                }
+            }
+            updateCountdown();
+            const timer = setInterval(updateCountdown, 1000);
+        }
+
+        // Scroll to section
+        function scrollToSection(index) {
+            const sections = document.querySelectorAll('[data-section]');
+            if (sections[index]) sections[index].scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Active navigation on scroll
+        window.addEventListener('scroll', () => {
+            const sections = document.querySelectorAll('[data-section]');
+            const navDots = document.querySelectorAll('.nav-dot');
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - sectionHeight / 3)) {
+                    current = section.getAttribute('data-section');
+                }
+            });
+            navDots.forEach((dot, index) => {
+                dot.classList.remove('active');
+                if (index === parseInt(current)) dot.classList.add('active');
+            });
+        });
+
+        // RSVP submit
+        function submitRSVP(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = {
+                action: 'rsvp',
+                name: formData.get('name'),
+                email: formData.get('email') || '',
+                phone: formData.get('phone'),
+                attendance: formData.get('attendance'),
+                guests: formData.get('guests'),
+                message: formData.get('message') || ''
+            };
+
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '⏳ MENGIRIM...';
+            submitBtn.disabled = true;
+
+            fetch(API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type':'application/json' },
+                body: JSON.stringify(data)
+            }).then(()=>{
+                alert('✅ Terima kasih atas konfirmasi Anda!\n\n' +
+                      'Nama: ' + data.name + '\n' +
+                      'Status: ' + data.attendance + '\n\n' +
+                      'Data Anda telah tersimpan.');
+                e.target.reset();
+            }).catch(error=>{
+                console.error('Error:', error);
+                alert('❌ Terjadi kesalahan. Silakan coba lagi atau hubungi kami.');
+            }).finally(()=>{
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        }
+
+        // Wish submit (sanitize via textContent)
+        function submitWish(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const name = formData.get('wishName') || 'Anonim';
+            const message = formData.get('wishMessage') || '';
+
+            const data = { action: 'wish', name: name, message: message };
+
+            const submitBtn = e.target.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = '⏳ MENGIRIM...';
+            submitBtn.disabled = true;
+
+            fetch(API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type':'application/json' },
+                body: JSON.stringify(data)
+            }).then(()=>{
+                const wishesList = document.getElementById('wishesList');
+                const wishItem = document.createElement('div');
+                wishItem.className = 'wish-item';
+
+                const authorEl = document.createElement('div');
+                authorEl.className = 'wish-author';
+                authorEl.textContent = name;
+
+                const msgEl = document.createElement('div');
+                msgEl.className = 'wish-message';
+                msgEl.textContent = message;
+
+                const dateEl = document.createElement('div');
+                dateEl.className = 'wish-date';
+                dateEl.textContent = new Date().toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
+
+                wishItem.appendChild(authorEl);
+                wishItem.appendChild(msgEl);
+                wishItem.appendChild(dateEl);
+
+                wishesList.insertBefore(wishItem, wishesList.firstChild);
+
+                alert('💕 Terima kasih atas ucapan dan doanya!');
+                e.target.reset();
+            }).catch(error=>{
+                console.error('Error:', error);
+                alert('❌ Terjadi kesalahan. Silakan coba lagi.');
+            }).finally(()=>{
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        }
+
+        // Load wishes (best-effort)
+        async function loadWishesFromBackend() {
+            try {
+                const response = await fetch(API_URL + '?action=getWishes');
+                const result = await response.json();
+                if (result.success && result.data && result.data.length > 0) {
+                    const wishesList = document.getElementById('wishesList');
+                    wishesList.innerHTML = '';
+                    result.data.forEach(wish => {
+                        const wishItem = document.createElement('div');
+                        wishItem.className = 'wish-item';
+                        const authorEl = document.createElement('div'); authorEl.className='wish-author'; authorEl.textContent = wish.name;
+                        const msgEl = document.createElement('div'); msgEl.className='wish-message'; msgEl.textContent = wish.message;
+                        const dateEl = document.createElement('div'); dateEl.className='wish-date'; dateEl.textContent = wish.date;
+                        wishItem.appendChild(authorEl); wishItem.appendChild(msgEl); wishItem.appendChild(dateEl);
+                        wishesList.appendChild(wishItem);
+                    });
+                }
+            } catch (error) {
+                console.log('Menggunakan ucapan default (gagal load dari backend).');
+            }
+        }
+
+        // Copy account number
+        function copyAccount(bank) {
+            let number = '';
+            if (bank === 'bca') number = document.getElementById('bca-number').textContent.trim();
+            else if (bank === 'mandiri') number = document.getElementById('mandiri-number').textContent.trim();
+            else number = '';
+
+            if (!number) { alert('Nomor tidak tersedia'); return; }
+
+            try {
+                navigator.clipboard.writeText(number).then(()=>{
+                    alert('Nomor rekening berhasil disalin: ' + number);
+                }).catch(err=>{
+                    console.warn('Clipboard write failed', err);
+                    window.prompt('Salin nomor berikut (Ctrl+C):', number);
+                });
+            } catch(e) {
+                window.prompt('Salin nomor berikut (Ctrl+C):', number);
+            }
+        }
+
+function openMap(type) {
+    if (type === 'ngunduh') {
+        // buka lokasi Ngunduh Mantu (Bekasi)
+        window.open('https://www.google.com/maps/search/?api=1&query=Jl.+Mede+Cijengkol+Setu+Bekasi', '_blank', 'noopener,noreferrer');
+    } else {
+        // buka lokasi Dusun Sembung Jaya (Ciamis)
+        window.open('https://www.google.com/maps/search/?api=1&query=Dusun+Sembung+Jaya+Desa+Mekarmukti+Cisaga', '_blank', 'noopener,noreferrer');
+    }
+}
+
+
+        // Reveal on scroll
+        function revealOnScroll() {
+            const elements = document.querySelectorAll('.couple-card, .event-card, .timeline-item, .wish-item, .gift-card, .gallery-item');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, index * 80);
+                    }
+                });
+            }, { threshold: 0.1 });
+            elements.forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+                element.style.transition = 'all 0.6s ease-out';
+                observer.observe(element);
+            });
+        }
+
+/* ============================
+   GALLERY FIX (Sesuaikan HTML kamu)
+   ============================ */
+
+const GALLERY_IMAGES = [
+    'image/img1.jpg',
+    'image/img2.jpg',
+    'image/img3.jpg',
+    'image/img4.jpg'
+];
+
+let galleryIndex = 0;
+
+// DIPANGGIL DARI HTML: onclick="openGallery(0)"
+function openGallery(index) {
+    galleryIndex = index;
+
+    const modal = document.getElementById('galleryModal');
+    const content = document.getElementById('modalContent');
+
+    content.innerHTML = `
+        <img src="${GALLERY_IMAGES[galleryIndex]}" 
+             style="max-width:100%; border-radius:10px;" />
+
+        <div style="margin-top:15px; display:flex; justify-content:center; gap:10px;">
+            <button onclick="galleryPrev()">◀ Prev</button>
+            <button onclick="galleryNext()">Next ▶</button>
+            <button onclick="closeModal()">Tutup ✕</button>
+        </div>
+    `;
+
+    modal.classList.add('active');
+    modal.style.display = 'flex';
+}
+
+// TUTUP
+function closeModal() {
+    const modal = document.getElementById('galleryModal');
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+
+    const content = document.getElementById('modalContent');
+    content.innerHTML = `
+        <h2 style="margin-bottom:20px; color:#fff;">Gallery Item</h2>
+        <p style="color:#ccc;">Placeholder untuk foto gallery</p>
+    `;
+}
+
+// NEXT
+function galleryNext() {
+    galleryIndex = (galleryIndex + 1) % GALLERY_IMAGES.length;
+    openGallery(galleryIndex);
+}
+
+// PREV
+function galleryPrev() {
+    galleryIndex = (galleryIndex - 1 + GALLERY_IMAGES.length) % GALLERY_IMAGES.length;
+    openGallery(galleryIndex);
+}
+
+// Klik luar modal → tutup
+window.addEventListener('click', (e) => {
+    const modal = document.getElementById('galleryModal');
+    if (e.target === modal) {
+        closeModal();
+    }
+});
+
+// ESC to close, ← → to navigate
+window.addEventListener('keydown', (e) => {
+    const modal = document.getElementById('galleryModal');
+    if (!modal.classList.contains('active')) return;
+
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowRight') galleryNext();
+    if (e.key === 'ArrowLeft') galleryPrev();
+});
+
+
+        // =========================
+        // INIT
+        // =========================
+        window.addEventListener('load', () => {
+            createParticles();
+            startCountdown();
+            revealOnScroll();
+            getGuestName();
+            loadWishesFromBackend();
+            trackVisitor();
+        });
+    </script>
+</body>
+</html>
